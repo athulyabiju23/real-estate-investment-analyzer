@@ -16,6 +16,8 @@ __pycache__/
 # Logs
 *.log
 
+.streamlit/secrets.toml
+
 # Mac
 .DS_Store
 EOF

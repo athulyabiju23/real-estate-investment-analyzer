@@ -2,20 +2,33 @@
 Real Estate Investment Dashboard
 """
 
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from pathlib import Path
+import snowflake.connector
 
 st.set_page_config(page_title="RE Investment Analyzer", page_icon="🏠", layout="wide")
 
-# ─── Load Data ────────────────────────────────────────────────────────────────
+# ─── Load Data from Snowflake ─────────────────────────────────────────────────
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_data():
-    props = pd.read_csv(Path("data/final/properties_enriched.csv"))
-    market = pd.read_csv(Path("data/final/market_summary.csv"))
+    conn = snowflake.connector.connect(
+        account=st.secrets["snowflake"]["account"],
+        user=st.secrets["snowflake"]["user"],
+        password=st.secrets["snowflake"]["password"],
+        database="real_estate",
+        warehouse="re_warehouse",
+        schema="analytics",
+    )
+    props = pd.read_sql("SELECT * FROM properties", conn)
+    market = pd.read_sql("SELECT * FROM market_summary", conn)
+    conn.close()
+    # Snowflake returns UPPERCASE column names
+    props.columns = props.columns.str.lower()
+    market.columns = market.columns.str.lower()
     return props, market
 
 df, market = load_data()
