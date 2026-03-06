@@ -1,0 +1,21 @@
+# Data files
+data/raw/*.csv
+data/cleaned/*.csv
+data/final/*.csv
+data/supplementary/*.csv
+
+# Virtual env
+realestate/
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+
+# Mac
+.DS_Store
+EOF
