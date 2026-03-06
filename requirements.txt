@@ -1,5 +1,8 @@
 streamlit
 pandas
 plotly
-snowflake-connector-python[pandas]
+streamlit
+pandas
+sqlalchemy
+snowflake-sqlalchemy
 numpy
